@@ -1,28 +1,35 @@
-document.getElementById('convertBtn').addEventListener('click', function () {
+document.getElementById('convertBtn').addEventListener('click', function() {
     const originalLink = document.getElementById('originalLink').value;
-    const convertedLink = convertZoomLink(originalLink);
-    if (convertedLink) {
-        const outputLink = document.getElementById('convertedLink');
-        outputLink.href = convertedLink;
-        outputLink.innerText = convertedLink;
-        outputLink.style.display = 'block';
-        document.getElementById('copyBtn').style.display = 'inline-block';
-        showNotification('Link converted successfully!', false);
-    } else {
-        showNotification('Format link tidak valid!', true);
-    }
+    const loader = document.getElementById('loader');
+    loader.style.display = 'block';
+
+    setTimeout(() => {
+        const convertedLink = convertZoomLink(originalLink);
+        loader.style.display = 'none';
+
+        if (convertedLink) {
+            const outputLink = document.getElementById('convertedLink');
+            outputLink.href = convertedLink;
+            outputLink.innerText = convertedLink;
+            outputLink.style.display = 'block';
+            document.getElementById('copyBtn').style.display = 'inline-block';
+            showNotification('Link converted successfully!', false);
+        } else {
+            showNotification('Format link tidak valid!', true);
+        }
+    }, 1000); // Simulate a delay for the loader
 });
 
-document.getElementById('copyBtn').addEventListener('click', function () {
+document.getElementById('copyBtn').addEventListener('click', function() {
     const convertedLink = document.getElementById('convertedLink').href;
-    navigator.clipboard.writeText(convertedLink).then(function () {
+    navigator.clipboard.writeText(convertedLink).then(function() {
         showNotification('Link copied to clipboard!', false);
-    }, function (err) {
+    }, function(err) {
         showNotification('Could not copy link: ' + err, true);
     });
 });
 
-document.getElementById('clearBtn').addEventListener('click', function () {
+document.getElementById('clearBtn').addEventListener('click', function() {
     document.getElementById('originalLink').value = '';
 });
 
@@ -44,5 +51,5 @@ function showNotification(message, isError) {
     notification.style.display = 'block';
     setTimeout(() => {
         notification.style.display = 'none';
-    }, 5000);
+    }, 3000);
 }
